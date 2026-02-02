@@ -1,0 +1,211 @@
+<!-- add-membership.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Membership | Acxiom ERP</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f43f5e;
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.95);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Radio Button Style */
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+
+        .radio-label:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .radio-label input {
+            width: auto;
+        }
+
+        .radio-label:has(input:checked) {
+            border-color: var(--primary);
+            background: rgba(244, 63, 94, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            padding: 15px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-card">
+            <h2 class="form-title">Add New Membership</h2>
+            <form id="addMemberForm">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" id="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Contact Number *</label>
+                    <input type="tel" id="contact" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Membership Duration *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="duration" value="6 months" checked>
+                            6 Months
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="duration" value="1 year">
+                            1 Year
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="duration" value="2 years">
+                            2 Years
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">Create Membership</button>
+            </form>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="maintenance.html" style="color: var(--text-muted); text-decoration: none;">Cancel</a>
+            </div>
+        </div>
+    </div>
+
+    <a href="../flow-chart.html" class="fab">📊 Flow Chart</a>
+
+    <script>
+        if (!sessionStorage.getItem('adminSession')) window.location.href = '../index.html';
+
+        document.getElementById('addMemberForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Logic to add member
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const newMember = {
+                id: 'MEM' + Date.now(),
+                fullName: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                contact: document.getElementById('contact').value,
+                membershipType: document.querySelector('input[name="duration"]:checked').value,
+                status: 'Active',
+                joinDate: new Date().toISOString()
+            };
+
+            users.push(newMember); // For demo, treating members as users
+            localStorage.setItem('users', JSON.stringify(users));
+
+            alert('Membership Created Successfully! ID: ' + newMember.id);
+            window.location.href = 'maintenance.html';
+        });
+    </script>
+</body>
+
+</html>

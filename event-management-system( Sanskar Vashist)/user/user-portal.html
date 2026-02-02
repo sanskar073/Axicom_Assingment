@@ -1,0 +1,241 @@
+<!-- user-portal.html (with Drop Down as per Excel) -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Portal | Acxiom ERP</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.95);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text);
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 0 40px;
+            text-align: center;
+        }
+
+        .welcome {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 50px;
+            font-size: 1.2rem;
+        }
+
+        .dropdown-container {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .dropdown-label {
+            display: block;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        select {
+            width: 100%;
+            padding: 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .action-btn {
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            padding: 15px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+        }
+    
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-left: 10px;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🛒 Procurement Portal</div>
+        <div class="nav-links">
+            <a href="user-portal.html" class="nav-link active">Portal</a>
+            <a href="products.html" class="nav-link">Products</a>
+            <a href="cart.html" class="nav-link">Cart</a>
+            <a href="request-item.html" class="nav-link">Request</a>
+            <a href="order-status.html" class="nav-link">Orders</a>
+            <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="welcome">Welcome, <span id="userName">User</span>!</h1>
+        <p class="subtitle">What would you like to do today?</p>
+
+        <div class="dropdown-container">
+            <label class="dropdown-label">Select Action (Drop Down):</label>
+            <select id="actionSelect">
+                <option value="">-- Select an Option --</option>
+                <option value="products">Browse Products</option>
+                <option value="cart">View Cart</option>
+                <option value="request">Request Item</option>
+                <option value="orders">Check Order Status</option>
+            </select>
+            <button class="action-btn" onclick="navigate()">Proceed →</button>
+        </div>
+    </div>
+
+    <a href="../flow-chart.html" class="fab">📊 Flow Chart</a>
+
+    <script>
+        const session = JSON.parse(sessionStorage.getItem('userSession'));
+        if (!session) window.location.href = 'user-login.html';
+
+        document.getElementById('userName').textContent = session.fullName;
+
+        function logout() {
+            sessionStorage.removeItem('userSession');
+            window.location.href = '../index.html';
+        }
+
+        function navigate() {
+            const action = document.getElementById('actionSelect').value;
+            if (!action) {
+                alert('Please select an action from the drop down!');
+                return;
+            }
+
+            const pages = {
+                'products': 'products.html',
+                'cart': 'cart.html',
+                'request': 'request-item.html',
+                'orders': 'order-status.html'
+            };
+
+            window.location.href = pages[action];
+        }
+    </script>
+</body>
+
+</html>

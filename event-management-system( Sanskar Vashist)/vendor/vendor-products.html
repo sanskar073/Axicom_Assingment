@@ -1,0 +1,243 @@
+<!-- vendor-products.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Products | Vendor Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f59e0b;
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.95);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text);
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .product-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .product-details {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-edit {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            padding: 15px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+        }
+    
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-left: 10px;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🏪 Vendor Portal</div>
+        <div class="nav-links">
+            <a href="vendor-page.html" class="nav-link">Add Item</a>
+            <a href="vendor-products.html" class="nav-link active">Products</a>
+            <a href="product-status.html" class="nav-link">Status</a>
+            <a href="update-item.html" class="nav-link">Update</a>
+            <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 style="margin-bottom: 30px; font-size: 2rem;">My Products</h1>
+        <div class="products-grid" id="productsGrid"></div>
+    </div>
+
+    <a href="../flow-chart.html" class="fab">📊 Flow Chart</a>
+
+    <script>
+        const session = JSON.parse(sessionStorage.getItem('vendorSession'));
+        if (!session) window.location.href = 'vendor-login.html';
+
+        function logout() {
+            sessionStorage.removeItem('vendorSession');
+            window.location.href = '../index.html';
+        }
+
+        function loadProducts() {
+            const products = JSON.parse(localStorage.getItem('products') || '[]');
+            const myProducts = products.filter(p => p.vendorId === session.id);
+            const grid = document.getElementById('productsGrid');
+
+            if (myProducts.length === 0) {
+                grid.innerHTML = '<p style="color: var(--text-muted); grid-column: 1/-1; text-align: center;">No products found.</p>';
+                return;
+            }
+
+            grid.innerHTML = myProducts.map(p => `
+                <div class="product-card">
+                    <h3 class="product-title">${p.productName}</h3>
+                    <div class="product-price">₹${parseFloat(p.price).toLocaleString('en-IN')}</div>
+                    <div class="product-details">
+                        <p>ID: ${p.id}</p>
+                        <p>Category: ${p.category}</p>
+                        <p>Quantity: ${p.quantity}</p>
+                        <p>Status: <span style="color: ${p.available ? '#10b981' : '#ef4444'}">${p.available ? 'Available' : 'Unavailable'}</span></p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn btn-edit" onclick="location.href='update-item.html?id=${p.id}'">Update</button>
+                        <button class="btn btn-delete" onclick="deleteProduct('${p.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteProduct(id) {
+            if (confirm('Delete this product permanently?')) {
+                let products = JSON.parse(localStorage.getItem('products'));
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('products', JSON.stringify(products));
+                loadProducts();
+            }
+        }
+
+        loadProducts();
+    </script>
+</body>
+
+</html>

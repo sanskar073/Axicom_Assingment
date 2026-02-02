@@ -1,0 +1,257 @@
+<!-- vendor-dashboard.html - The MISSING "Vendor" Sheet from Excel -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor | Acxiom ERP</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f59e0b;
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.95);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text);
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .welcome-banner h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .welcome-banner p {
+            color: var(--text-muted);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .menu-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .menu-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(245, 158, 11, 0.2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .menu-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .menu-desc {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            padding: 15px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+        }
+    
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-left: 10px;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🏪 Vendor Dashboard</div>
+        <div class="nav-links">
+            <a href="vendor-dashboard.html" class="nav-link active">Vendor</a>
+            <a href="vendor-page.html" class="nav-link">Add Item</a>
+            <a href="vendor-products.html" class="nav-link">Products</a>
+            <a href="product-status.html" class="nav-link">Status</a>
+            <a href="update-item.html" class="nav-link">Update</a>
+            <a href="../flow-chart.html" class="nav-link">Flow Chart</a>
+            <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-banner">
+            <h1>Welcome, <span id="vendorName">Vendor</span>!</h1>
+            <p>Manage your product catalog and track performance</p>
+        </div>
+
+        <div class="menu-grid">
+            <div class="menu-card" onclick="location.href='vendor-page.html'">
+                <div class="menu-icon">➕</div>
+                <h3 class="menu-title">Add Item</h3>
+                <p class="menu-desc">Add new products to your catalog</p>
+            </div>
+
+            <div class="menu-card" onclick="location.href='vendor-products.html'">
+                <div class="menu-icon">📦</div>
+                <h3 class="menu-title">Products</h3>
+                <p class="menu-desc">View all your listed products</p>
+            </div>
+
+            <div class="menu-card" onclick="location.href='product-status.html'">
+                <div class="menu-icon">📊</div>
+                <h3 class="menu-title">Product Status</h3>
+                <p class="menu-desc">Check inventory and performance metrics</p>
+            </div>
+
+            <div class="menu-card" onclick="location.href='update-item.html'">
+                <div class="menu-icon">✏️</div>
+                <h3 class="menu-title">Update</h3>
+                <p class="menu-desc">Edit existing product details</p>
+            </div>
+        </div>
+    </div>
+
+    <a href="../flow-chart.html" class="fab">📊 Flow Chart</a>
+
+    <script>
+        if (!sessionStorage.getItem('vendorSession')) {
+            window.location.href = 'vendor-login.html';
+        }
+
+        try {
+            document.getElementById('vendorName').textContent =
+                JSON.parse(sessionStorage.getItem('vendorSession')).companyName;
+        } catch (e) {
+            console.error('Session error');
+        }
+
+        function logout() {
+            sessionStorage.removeItem('vendorSession');
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+
+</html>

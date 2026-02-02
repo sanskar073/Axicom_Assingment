@@ -1,0 +1,291 @@
+<!-- flow-chart.html - Complete File Structure Visualization -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Architecture | Acxiom ERP</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --admin: #6366f1;
+            --vendor: #f59e0b;
+            --user: #10b981;
+            --system: #ec4899;
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.8);
+            --text: #f8fafc;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .column {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+        }
+
+        .column-header {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-col .column-header {
+            color: var(--admin);
+            border-color: var(--admin);
+        }
+
+        .vendor-col .column-header {
+            color: var(--vendor);
+            border-color: var(--vendor);
+        }
+
+        .user-col .column-header {
+            color: var(--user);
+            border-color: var(--user);
+        }
+
+        .folder-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .file-node {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+
+        .file-node:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .file-node::before {
+            content: '📄';
+            margin-right: 8px;
+        }
+
+        .file-name {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .file-desc {
+            color: #64748b;
+            font-size: 0.75rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Flow Indicators */
+        .entry-section {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(99, 102, 241, 0.1));
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .entry-node {
+            display: inline-block;
+            background: rgba(236, 72, 153, 0.2);
+            border: 1px solid rgba(236, 72, 153, 0.4);
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>System Architecture</h1>
+            <p class="subtitle">Complete File Mapping (Folder Structure Edition)</p>
+        </header>
+
+        <div class="entry-section">
+            <div style="color: #ec4899; font-weight: 700; margin-bottom: 10px;">ROOT DIRECTORY</div>
+            <div class="entry-node">index.html</div>
+            <span style="margin: 0 15px; color: #64748b;">+</span>
+            <div class="entry-node">erp.js</div>
+            <div style="margin-top: 10px; color: #94a3b8; font-size: 0.9rem;">Entry Gateway & Core Engine</div>
+        </div>
+
+        <div class="architecture-grid">
+            <!-- ADMIN COLUMN -->
+            <div class="column admin-col">
+                <div class="column-header"><span>👨💼</span> Admin Module</div>
+                <span class="folder-label">📂 /admin</span>
+
+                <div class="file-node">
+                    <div class="file-name">admin-login.html</div>
+                    <div class="file-desc">Auth Portal</div>
+                </div>
+                <div class="file-node">
+                    <div class="file-name">admin-dashboard.html</div>
+                    <div class="file-desc">Main Control Panel</div>
+                </div>
+                <div class="file-node">
+                    <div class="file-name">maintenance.html</div>
+                    <div class="file-desc">Maintenance Hub</div>
+                </div>
+
+                <div style="border-left: 2px dashed var(--admin); padding-left: 15px; margin: 10px 0;">
+                    <div class="file-node">
+                        <div class="file-name">maintain-user.html</div>
+                    </div>
+                    <div class="file-node">
+                        <div class="file-name">maintain-vendor.html</div>
+                    </div>
+                    <div class="file-node">
+                        <div class="file-name">add-membership.html</div>
+                    </div>
+                    <div class="file-node">
+                        <div class="file-name">update-membership.html</div>
+                    </div>
+                    <div class="file-node">
+                        <div class="file-name">reports.html</div>
+                    </div>
+                    <div class="file-node">
+                        <div class="file-name">transactions.html</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VENDOR COLUMN -->
+            <div class="column vendor-col">
+                <div class="column-header"><span>🏪</span> Vendor Module</div>
+                <span class="folder-label">📂 /vendor</span>
+
+                <div class="file-node">
+                    <div class="file-name">vendor-login.html</div>
+                    <div class="file-desc">Auth Portal</div>
+                </div>
+                <div class="file-node">
+                    <div class="file-name">vendor-dashboard.html</div>
+                    <div class="file-desc">Main Hub</div>
+                </div>
+                <div class="file-node">
+                    <div class="file-name">vendor-page.html</div>
+                    <div class="file-desc">Add Item</div>
+                </div>
+
+                <div style="border-left: 2px dashed var(--vendor); padding-left: 15px; margin: 10px 0;">
+                    <div class="file-node">
+                        <div class="file-name">vendor-products.html</div>
+                    </div>
+                    <div class="file-node">
+                        <div class="file-name">product-status.html</div>
+                    </div>
+                    <div class="file-node">
+                        <div class="file-name">update-item.html</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- USER COLUMN -->
+            <div class="column user-col">
+                <div class="column-header"><span>🛒</span> User Module</div>
+                <span class="folder-label">📂 /user</span>
+
+                <div class="file-node">
+                    <div class="file-name">user-login.html</div>
+                    <div class="file-desc">Auth Portal</div>
+                </div>
+                <div class="file-node">
+                    <div class="file-name">user-portal.html</div>
+                    <div class="file-desc">Main Hub</div>
+                </div>
+
+                <div style="border-left: 2px dashed var(--user); padding-left: 15px; margin: 10px 0;">
+                    <div class="file-node">
+                        <div class="file-name">products.html</div>
+                    </div>
+                    <div class="file-node">
+                        <div class="file-name">cart.html</div>
+                    </div>
+                    <div class="file-node">
+                        <div class="file-name">checkout.html</div>
+                    </div>
+                    <div class="file-node">
+                        <div class="file-name">success.html</div>
+                    </div>
+                    <div class="file-node">
+                        <div class="file-name">request-item.html</div>
+                    </div>
+                    <div class="file-node">
+                        <div class="file-name">order-status.html</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; color: #64748b;">
+            <p>Total: 27 HTML Files • Organized by Role</p>
+        </div>
+    </div>
+</body>
+
+</html>
