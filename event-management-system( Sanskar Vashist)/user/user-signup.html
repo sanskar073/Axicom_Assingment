@@ -1,0 +1,633 @@
+<!-- user-signup.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Registration | Acxiom ERP</title>
+    <style>
+        /* style.css - Acxiom ERP Global Design System */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+        :root {
+            --primary: #4f46e5;
+            --admin: #6366f1;
+            --vendor: #f59e0b;
+            --user: #10b981;
+            --danger: #ef4444;
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.8);
+            --surface-light: rgba(255, 255, 255, 0.05);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --glass: blur(20px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* Auth Page Specifics (Global) */
+        body.auth-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            padding: 20px;
+        }
+
+        .auth-bg-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            z-index: -1;
+            animation: pulse-glow 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 420px;
+            background: var(--surface);
+            backdrop-filter: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 5px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            /* Consistent rounded */
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 14px 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+        }
+
+        /* Buttons Variants */
+        .btn-admin {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+        }
+
+        .btn-vendor {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .btn-user {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        /* Utilities */
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--surface);
+            backdrop-filter: var(--glass);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-brand {
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .nav-links a {
+            margin-left: 20px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        /* Floating Action Button (FAB) */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 12px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: 0.3s;
+        }
+
+        .fab:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        td {
+            color: var(--text-muted);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Dashboard Grids */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card,
+        .stat-card {
+            background: var(--surface);
+            backdrop-filter: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+
+<body class="auth-page">
+    <div class="auth-bg-animation"
+        style="background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);"></div>
+
+    <div class="auth-card" style="max-width: 500px;">
+        <div class="text-center mb-20">
+            <h2 style="color: var(--user);">Create Client Account</h2>
+            <p>Access Enterprise Procurement Services</p>
+        </div>
+
+        <form id="signupForm">
+            <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" id="fullName" required placeholder="John Doe">
+            </div>
+
+            <div class="form-group">
+                <label>Username *</label>
+                <input type="text" id="username" required placeholder="jdoe24">
+            </div>
+
+            <div class="form-group">
+                <label>Email Address *</label>
+                <input type="email" id="email" required placeholder="john@example.com">
+            </div>
+
+            <div class="form-group">
+                <label>Password *</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+
+            <div class="form-group">
+                <label>Contact Number</label>
+                <input type="tel" id="contact" placeholder="+1 234 567 890">
+            </div>
+
+            <button type="submit" class="btn btn-user">Create Account</button>
+        </form>
+
+        <div class="text-center mt-20">
+            <p style="font-size: 0.9rem;">Already have an ID? <a href="user-login.html"
+                    style="color: var(--user); font-weight: 600;">Sign In</a></p>
+        </div>
+
+        <div class="text-center mt-20">
+            <a href="../index.html" style="font-size: 0.85rem; color: var(--text-muted);">← Back to Entry</a>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * erp.js - Core Enterprise Resource Planning Logic
+         * Implements Acxiom Consulting's Enterprise Standards
+         * 
+         * Features:
+         * 1. Audit Trail System
+         * 2. Role-Based Access Control (RBAC)
+         * 3. SAP Integration Simulation
+         * 4. Business Rules Engine
+         * 5. Data Export Utilities
+         */
+
+        // --- 1. Audit Trail System ---
+        const AuditSystem = {
+            log: function (action, entity, userId, details) {
+                const auditLog = JSON.parse(localStorage.getItem('auditLogs') || '[]');
+                const entry = {
+                    id: 'AUD-' + Date.now(),
+                    timestamp: new Date().toISOString(),
+                    action: action,        // CREATE, UPDATE, DELETE, LOGIN, APPROVE
+                    entity: entity,        // User, Vendor, Product, Order
+                    userId: userId,
+                    ipAddress: '192.168.1.' + Math.floor(Math.random() * 255), // Simulated IP
+                    details: details,
+                    status: 'SUCCESS'
+                };
+                auditLog.push(entry);
+                localStorage.setItem('auditLogs', JSON.stringify(auditLog));
+                console.log(`[ERP AUDIT] ${action} on ${entity} by ${userId}`);
+            },
+
+            getLogs: function () {
+                return JSON.parse(localStorage.getItem('auditLogs') || '[]');
+            }
+        };
+
+        // --- 2. Role-Based Access Control (RBAC) ---
+        const PERMISSIONS = {
+            ADMIN: ['CREATE_USER', 'DELETE_USER', 'APPROVE_VENDOR', 'VIEW_REPORTS', 'EXPORT_DATA', 'VIEW_AUDIT'],
+            VENDOR: ['ADD_ITEM', 'UPDATE_OWN_ITEM', 'VIEW_OWN_STATS'],
+            USER: ['PLACE_ORDER', 'VIEW_ORDERS', 'REQUEST_ITEM']
+        };
+
+        const RBAC = {
+            hasPermission: function (role, action) {
+                // Normalize role to uppercase
+                const upperRole = role.toUpperCase();
+                if (!PERMISSIONS[upperRole]) return false;
+                return PERMISSIONS[upperRole].includes(action);
+            },
+
+            checkAccess: function (role, action) {
+                if (!this.hasPermission(role, action)) {
+                    alert('⛔ ACCESS DENIED: Insufficient ERP Privileges.');
+                    return false;
+                }
+                return true;
+            }
+        };
+
+        // --- 3. SAP ERP Integration Hooks ---
+        const SAPIntegration = {
+            syncVendor: function (vendorData) {
+                console.log('🔄 [SAP INTEGRATION] Bridging to SAP S/4HANA...');
+                console.log(`Connector: BAPI_VENDOR_CREATEFROMDATA | Status: SYNCING...`);
+
+                // Simulate network latency and SAP response
+                setTimeout(() => {
+                    const sapId = 'SAP' + Math.floor(Math.random() * 1000000);
+                    const syncRecord = {
+                        acxiomId: vendorData.id,
+                        sapId: sapId,
+                        syncDate: new Date().toISOString(),
+                        status: 'SYNCED'
+                    };
+                    localStorage.setItem(`sap_sync_${vendorData.id}`, JSON.stringify(syncRecord));
+                    console.log(`✅ [SAP INTEGRATION] Sync Complete. SAP Vendor ID: ${sapId}`);
+                }, 800);
+            },
+
+            syncOrder: function (orderData) {
+                console.log('🔄 [SAP INTEGRATION] Posting Invoice to SAP FI/CO...');
+                // Simulate GL posting
+                const glEntry = {
+                    debit: 'Accounts Receivable',
+                    credit: 'Sales Revenue',
+                    amount: orderData.total,
+                    currency: 'INR',
+                    docDate: new Date().toISOString()
+                };
+                console.log('GL Document:', glEntry);
+            }
+        };
+
+        // --- 4. Business Rules Engine ---
+        const BusinessRules = {
+            validateOrder: function (orderData, vendorApprovalStatus) {
+                const errors = [];
+
+                // Rule 1: Minimum Order Value (Corporate Policy)
+                if (orderData.total < 100) {
+                    errors.push('Business Rule Violation: Minimum order value is $100 (Corporate Policy 102.3)');
+                }
+
+                // Rule 2: Compliance Check
+                if (vendorApprovalStatus !== 'approved') {
+                    errors.push('Compliance Error: Cannot procure from unapproved vendor (SOX Compliance)');
+                }
+
+                return errors;
+            }
+        };
+
+        // --- 5. Data Export Utilities (Excel/CSV) ---
+        const DataExport = {
+            toCSV: function (data, filename) {
+                if (!data || !data.length) {
+                    alert('No data to export');
+                    return;
+                }
+
+                const headers = Object.keys(data[0]);
+                let csv = headers.join(',') + '\n';
+
+                data.forEach(row => {
+                    const values = headers.map(header => {
+                        const val = row[header];
+                        return `"${val}"`; // Handle commas in data
+                    });
+                    csv += values.join(',') + '\n';
+                });
+
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename || 'acxiom_erp_export.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                AuditSystem.log('EXPORT_DATA', 'System', 'Admin', { filename: filename });
+            }
+        };
+
+        // --- 6. Order Status Constants ---
+        const ORDER_STATUS = {
+            PENDING: 'pending',
+            APPROVED: 'approved',
+            PROCESSING: 'processing',
+            COMPLETED: 'completed'
+        };
+
+        // --- 7. Product Categories for Technical Events ---
+        const PRODUCT_CATEGORIES = {
+            AUDIO: 'audio',
+            VISUAL: 'visual',
+            LIGHTING: 'lighting'
+        };
+
+        // --- 8. Sample Data Initialization ---
+        const SampleData = {
+            products: [
+                { id: 'PRD001', productName: 'Professional Wireless Microphone', category: 'audio', price: 18500, vendorName: 'SoundTech Pro', vendorId: 'VND001', available: true, stock: 15, image: '' },
+                { id: 'PRD002', productName: 'Studio Monitor Speakers (Pair)', category: 'audio', price: 35000, vendorName: 'SoundTech Pro', vendorId: 'VND001', available: true, stock: 8, image: '' },
+                { id: 'PRD003', productName: 'DJ Mixer Console', category: 'audio', price: 28000, vendorName: 'SoundTech Pro', vendorId: 'VND001', available: true, stock: 5, image: '' },
+                { id: 'PRD004', productName: 'LED Stage Light Panel', category: 'lighting', price: 12500, vendorName: 'LightCraft Events', vendorId: 'VND002', available: true, stock: 20, image: '' },
+                { id: 'PRD005', productName: 'Moving Head Spotlight', category: 'lighting', price: 24000, vendorName: 'LightCraft Events', vendorId: 'VND002', available: true, stock: 12, image: '' },
+                { id: 'PRD006', productName: 'RGB Laser Show System', category: 'lighting', price: 45000, vendorName: 'LightCraft Events', vendorId: 'VND002', available: true, stock: 4, image: '' },
+                { id: 'PRD007', productName: 'HD Projector 5000 Lumens', category: 'visual', price: 55000, vendorName: 'VisualPro Solutions', vendorId: 'VND003', available: true, stock: 6, image: '' },
+                { id: 'PRD008', productName: 'LED Video Wall Panel', category: 'visual', price: 32000, vendorName: 'VisualPro Solutions', vendorId: 'VND003', available: true, stock: 10, image: '' },
+                { id: 'PRD009', productName: 'Presentation Screen 120"', category: 'visual', price: 11000, vendorName: 'VisualPro Solutions', vendorId: 'VND003', available: true, stock: 8, image: '' },
+                { id: 'PRD010', productName: 'Conference Audio System', category: 'audio', price: 42000, vendorName: 'SoundTech Pro', vendorId: 'VND001', available: true, stock: 3, image: '' },
+                { id: 'PRD011', productName: 'Strobe Light Pack', category: 'lighting', price: 8500, vendorName: 'LightCraft Events', vendorId: 'VND002', available: true, stock: 25, image: '' },
+                { id: 'PRD012', productName: '4K Video Camera', category: 'visual', price: 72000, vendorName: 'VisualPro Solutions', vendorId: 'VND003', available: true, stock: 4, image: '' }
+            ],
+
+            vendors: [
+                { id: 'VND001', companyName: 'SoundTech Pro', contactPerson: 'John Smith', username: 'soundtech', password: 'vendor123', approval: 'approved', comments: 'Premium audio equipment supplier', lastUpdated: new Date().toISOString(), updatedBy: 'admin' },
+                { id: 'VND002', companyName: 'LightCraft Events', contactPerson: 'Sarah Johnson', username: 'lightcraft', password: 'vendor123', approval: 'approved', comments: 'Professional lighting solutions', lastUpdated: new Date().toISOString(), updatedBy: 'admin' },
+                { id: 'VND003', companyName: 'VisualPro Solutions', contactPerson: 'Mike Davis', username: 'visualpro', password: 'vendor123', approval: 'approved', comments: 'Visual display and projection', lastUpdated: new Date().toISOString(), updatedBy: 'admin' }
+            ],
+
+                        initializeData: function () {
+                // Only initialize if no data exists
+                if (!localStorage.getItem('products') || JSON.parse(localStorage.getItem('products')).length === 0) {
+                    localStorage.setItem('products', JSON.stringify(this.products));
+                    console.log('[ERP] Sample products initialized');
+                }
+
+                if (!localStorage.getItem('vendors') || JSON.parse(localStorage.getItem('vendors')).length === 0) {
+                    localStorage.setItem('vendors', JSON.stringify(this.vendors));
+                    console.log('[ERP] Sample vendors initialized');
+                }
+
+                // Initialize default admin account (sanskar)
+                if (!localStorage.getItem('admins') || JSON.parse(localStorage.getItem('admins')).length === 0) {
+                    localStorage.setItem('admins', JSON.stringify([
+                        { username: 'sanskar', password: 'admin123', role: 'admin', createdAt: new Date().toISOString() }
+                    ]));
+                    console.log('[ERP] Default admin initialized');
+                }
+
+                // Initialize default user account (sanskar1)
+                if (!localStorage.getItem('users') || JSON.parse(localStorage.getItem('users')).length === 0) {
+                    localStorage.setItem('users', JSON.stringify([
+                        { id: 'USR001', username: 'sanskar1', password: 'password123', email: 'sanskar1@example.com', createdAt: new Date().toISOString() }
+                    ]));
+                    console.log('[ERP] Default user initialized');
+                }
+
+                if (!localStorage.getItem('orders')) {
+                    localStorage.setItem('orders', JSON.stringify([]));
+                }
+            }
+            }
+        };
+
+        // Auto-initialize sample data on load
+        SampleData.initializeData();
+
+
+    </script>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const fullName = document.getElementById('fullName').value;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const contact = document.getElementById('contact').value;
+
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+            if (users.find(u => u.username === username)) {
+                alert("Username taken!");
+                return;
+            }
+
+            const newUser = {
+                id: 'U' + Date.now(),
+                fullName,
+                username,
+                email,
+                password,
+                contact,
+                role: 'Client',
+                status: 'Active',
+                joined: new Date().toISOString()
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            logAudit('USER_REGISTRATION', `New User Signed Up: ${username}`);
+
+            alert("Account Created Successfully!");
+            window.location.href = 'user-login.html';
+        });
+    </script>
+</body>
+
+</html>
