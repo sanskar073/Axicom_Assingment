@@ -1,0 +1,284 @@
+<!-- update-item.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Item | Vendor Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f59e0b;
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.95);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text);
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .search-box {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            padding: 15px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+        }
+    
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-left: 10px;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🏪 Update Item</div>
+        <div class="nav-links">
+            <a href="vendor-page.html" class="nav-link">Add Item</a>
+            <a href="vendor-products.html" class="nav-link">Products</a>
+            <a href="product-status.html" class="nav-link">Status</a>
+            <a href="update-item.html" class="nav-link active">Update</a>
+            <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <h2 style="margin-bottom: 30px;">Update Product Details</h2>
+
+            <div class="search-box">
+                <select id="productSelect">
+                    <option value="">Select a product to update...</option>
+                </select>
+                <button class="btn" style="width: auto;" onclick="loadProduct()">Load</button>
+            </div>
+
+            <form id="updateForm" style="display: none;">
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" id="productName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Price</label>
+                    <input type="number" id="price" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" id="quantity" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="description" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="available">
+                        Available for Sale
+                    </label>
+                </div>
+
+                <button type="submit" class="btn">Update Product</button>
+            </form>
+        </div>
+    </div>
+
+    <a href="../flow-chart.html" class="fab">📊 Flow Chart</a>
+
+    <script>
+        const session = JSON.parse(sessionStorage.getItem('vendorSession'));
+        if (!session) window.location.href = 'vendor-login.html';
+
+        function logout() {
+            sessionStorage.removeItem('vendorSession');
+            window.location.href = '../index.html';
+        }
+
+        // Load passed ID from URL if any
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlId = urlParams.get('id');
+
+        const products = JSON.parse(localStorage.getItem('products') || '[]');
+        const myProducts = products.filter(p => p.vendorId === session.id);
+        const select = document.getElementById('productSelect');
+
+        myProducts.forEach(p => {
+            const option = document.createElement('option');
+            option.value = p.id;
+            option.text = p.productName;
+            if (p.id === urlId) option.selected = true;
+            select.appendChild(option);
+        });
+
+        if (urlId) {
+            loadProduct();
+        }
+
+        function loadProduct() {
+            const id = document.getElementById('productSelect').value;
+            if (!id) return;
+
+            const product = products.find(p => p.id === id);
+            if (product) {
+                document.getElementById('updateForm').style.display = 'block';
+                document.getElementById('productName').value = product.productName;
+                document.getElementById('price').value = product.price;
+                document.getElementById('quantity').value = product.quantity;
+                document.getElementById('description').value = product.description;
+                document.getElementById('available').checked = product.available;
+            }
+        }
+
+        document.getElementById('updateForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const id = document.getElementById('productSelect').value;
+            const index = products.findIndex(p => p.id === id);
+
+            if (index !== -1) {
+                products[index].productName = document.getElementById('productName').value;
+                products[index].price = parseFloat(document.getElementById('price').value);
+                products[index].quantity = parseInt(document.getElementById('quantity').value);
+                products[index].description = document.getElementById('description').value;
+                products[index].available = document.getElementById('available').checked;
+
+                localStorage.setItem('products', JSON.stringify(products));
+                alert('Product updated successfully!');
+            }
+        });
+    </script>
+</body>
+
+</html>

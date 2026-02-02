@@ -1,0 +1,169 @@
+<!-- transactions.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions | Acxiom ERP</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10b981;
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.95);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .transaction-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .transaction-card:hover {
+            transform: translateX(5px);
+            border-color: var(--primary);
+        }
+
+        .t-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .t-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .t-info h4 {
+            margin-bottom: 5px;
+        }
+
+        .t-info p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .t-amount {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #10b981;
+        }
+
+        .btn-back {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            padding: 15px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>💳 Transaction History</h1>
+                <p style="color: var(--text-muted)">Financial Log</p>
+            </div>
+            <a href="javascript:history.back()" class="btn-back">Back</a>
+        </div>
+
+        <div class="transaction-list" id="tList">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <a href="../flow-chart.html" class="fab">📊 Flow Chart</a>
+
+    <script>
+        const admin = sessionStorage.getItem('adminSession');
+        const user = sessionStorage.getItem('userSession');
+        if (!admin && !user) window.location.href = '../index.html';
+
+        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        const list = document.getElementById('tList');
+
+        if (orders.length === 0) {
+            list.innerHTML = '<div style="text-align:center; color: #64748b;">No transactions recorded.</div>';
+        } else {
+            orders.reverse().forEach(o => {
+                list.innerHTML += `
+                    <div class="transaction-card">
+                        <div class="t-left">
+                            <div class="t-icon">💰</div>
+                            <div class="t-info">
+                                <h4>Order #${o.id}</h4>
+                                <p>${o.userName} • ${o.payment.toUpperCase()}</p>
+                            </div>
+                        </div>
+                        <div class="t-amount">₹${o.total.toLocaleString('en-IN')}</div>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+
+</html>

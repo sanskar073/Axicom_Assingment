@@ -1,0 +1,194 @@
+<!-- reports.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | Acxiom ERP</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #8b5cf6;
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.95);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        .report-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        th {
+            color: var(--text);
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        tr:hover td {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .btn-back {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            padding: 15px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>📑 System Reports</h1>
+                <p style="color: var(--text-muted)">Generated on:
+                    <script>document.write(new Date().toLocaleDateString())</script>
+                </p>
+            </div>
+            <a href="javascript:history.back()" class="btn-back">Back</a>
+        </div>
+
+        <div class="report-card">
+            <h3>Active Memberships Report</h3>
+            <table id="membersTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Joined</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="memberBody"></tbody>
+            </table>
+        </div>
+
+        <div class="report-card">
+            <h3>Transaction Summary Report</h3>
+            <table id="ordersTable">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>User</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="orderBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <a href="../flow-chart.html" class="fab">📊 Flow Chart</a>
+
+    <script>
+        // Check Access
+        const admin = sessionStorage.getItem('adminSession');
+        const user = sessionStorage.getItem('userSession');
+        if (!admin && !user) window.location.href = '../index.html';
+
+        // Load Data
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+        // Render Members (Only if Admin, or show only self if User?)
+        // Prompt says "User has access to reports". Assuming they can see general reports or their own.
+        // For simplicity/compliance, showing data.
+        const memberBody = document.getElementById('memberBody');
+        users.forEach(u => {
+            memberBody.innerHTML += `
+                <tr>
+                    <td>${u.id || 'N/A'}</td>
+                    <td>${u.fullName || u.username}</td>
+                    <td>${u.membershipType || 'Standard'}</td>
+                    <td>${u.joinDate ? u.joinDate.split('T')[0] : '-'}</td>
+                    <td><span style="color: ${u.status === 'Active' ? '#4ade80' : '#f87171'}">${u.status || 'Active'}</span></td>
+                </tr>
+            `;
+        });
+
+        const orderBody = document.getElementById('orderBody');
+        orders.forEach(o => {
+            orderBody.innerHTML += `
+                <tr>
+                    <td>${o.id}</td>
+                    <td>${o.userName}</td>
+                    <td>$${o.total}</td>
+                    <td>${o.date.split('T')[0]}</td>
+                    <td>${o.status}</td>
+                </tr>
+            `;
+        });
+    </script>
+</body>
+
+</html>

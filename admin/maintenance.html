@@ -1,0 +1,194 @@
+<!-- maintenance.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance | Acxiom ERP</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f43f5e;
+            /* Red/Pink for Maintenance/Admin */
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.95);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: 0.3s;
+            margin-left: 20px;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header-title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header-subtitle {
+            color: var(--text-muted);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            padding: 15px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🛠️ Maintenance</div>
+        <div>
+            <a href="admin-dashboard.html" class="nav-link">Dashboard</a>
+            <a href="#" onclick="logout()" class="nav-link">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header-section">
+            <h1 class="header-title">System Maintenance</h1>
+            <p class="header-subtitle">Manage Memberships and Core System Data</p>
+        </div>
+
+        <div class="grid">
+            <div class="card" onclick="location.href='add-membership.html'">
+                <div class="icon">➕</div>
+                <h3 class="card-title">Add Membership</h3>
+                <p class="card-desc">Register new members with 6mo, 1yr, or 2yr plans.</p>
+            </div>
+
+            <div class="card" onclick="location.href='update-membership.html'">
+                <div class="icon">✏️</div>
+                <h3 class="card-title">Update Membership</h3>
+                <p class="card-desc">Extend or cancel existing memberships.</p>
+            </div>
+
+            <div class="card" onclick="location.href='reports.html'">
+                <div class="icon">📑</div>
+                <h3 class="card-title">View Reports</h3>
+                <p class="card-desc">Access system-wide membership and order reports.</p>
+            </div>
+
+            <div class="card" onclick="location.href='transactions.html'">
+                <div class="icon">💳</div>
+                <h3 class="card-title">Transactions</h3>
+                <p class="card-desc">Review payment log files and transaction history.</p>
+            </div>
+        </div>
+    </div>
+
+    <a href="../flow-chart.html" class="fab">📊 Flow Chart</a>
+
+    <script>
+        // Security Check
+        const session = JSON.parse(sessionStorage.getItem('adminSession'));
+        if (!session) {
+            alert('Access Denied: Admin Only');
+            window.location.href = '../index.html';
+        }
+
+        function logout() {
+            sessionStorage.removeItem('adminSession');
+            window.location.href = '../index.html';
+        }
+    </script>
+</body>
+
+</html>

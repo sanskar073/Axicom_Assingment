@@ -1,0 +1,664 @@
+<!-- vendor-page.html (Add Item) -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Add Item | Vendor Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #f59e0b;
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.95);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text);
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-left: 10px;
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 40px;
+        }
+
+        .card {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .radio-label:has(input:checked) {
+            border-color: var(--primary);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        /* Image Upload Styles */
+        .image-upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        .image-upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .image-upload-area.has-image {
+            padding: 15px;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .upload-hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        #imagePreview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .price-input-group {
+            position: relative;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .price-input-group input {
+            padding-left: 40px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4);
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+            padding: 15px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">🏪 Vendor Portal</div>
+        <div class="nav-links">
+            <a href="vendor-page.html" class="nav-link active">Add Item</a>
+            <a href="vendor-products.html" class="nav-link">Products</a>
+            <a href="product-status.html" class="nav-link">Status</a>
+            <a href="update-item.html" class="nav-link">Update</a>
+            <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card">
+            <h2 style="font-size: 1.8rem; margin-bottom: 30px; font-weight: 700;">Add New Product</h2>
+            <form id="addItemForm">
+                <div class="form-group">
+                    <label>Product Name *</label>
+                    <input type="text" id="productName" placeholder="e.g., Professional Wireless Microphone" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Category *</label>
+                    <select id="category" required>
+                        <option value="">Select Category</option>
+                        <option value="audio">🎵 Audio Equipment</option>
+                        <option value="visual">📺 Visual Equipment</option>
+                        <option value="lighting">💡 Lighting Equipment</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Product Image</label>
+                    <div class="image-upload-area" onclick="document.getElementById('productImage').click()">
+                        <div id="uploadPlaceholder">
+                            <div class="upload-icon">📷</div>
+                            <div class="upload-text">Click to upload product image</div>
+                            <div class="upload-hint">JPG, PNG or GIF (Max 2MB)</div>
+                        </div>
+                        <img id="imagePreview" alt="Preview">
+                    </div>
+                    <input type="file" id="productImage" accept="image/*" style="display: none;"
+                        onchange="previewImage(this)">
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="description" rows="4" placeholder="Describe your product features..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Price (₹ INR) *</label>
+                    <div class="price-input-group">
+                        <span class="currency-symbol">₹</span>
+                        <input type="number" id="price" min="0" step="1" placeholder="5000" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Stock Quantity *</label>
+                    <input type="number" id="quantity" min="1" placeholder="10" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Condition</label>
+                    <div class="radio-group">
+                        <label class="radio-label"><input type="radio" name="condition" value="new" checked> New</label>
+                        <label class="radio-label"><input type="radio" name="condition" value="used"> Used</label>
+                        <label class="radio-label"><input type="radio" name="condition" value="refurbished">
+                            Refurbished</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-group">
+                        <input type="checkbox" id="available" checked>
+                        <span>Available for Sale</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn">Add Product & Sync to ERP →</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer">Powered by Acxiom ERP</div>
+    <a href="../flow-chart.html" class="fab">📊 Flow Chart</a>
+    <script>
+        /**
+         * erp.js - Core Enterprise Resource Planning Logic
+         * Implements Acxiom Consulting's Enterprise Standards
+         * 
+         * Features:
+         * 1. Audit Trail System
+         * 2. Role-Based Access Control (RBAC)
+         * 3. SAP Integration Simulation
+         * 4. Business Rules Engine
+         * 5. Data Export Utilities
+         */
+
+        // --- 1. Audit Trail System ---
+        const AuditSystem = {
+            log: function (action, entity, userId, details) {
+                const auditLog = JSON.parse(localStorage.getItem('auditLogs') || '[]');
+                const entry = {
+                    id: 'AUD-' + Date.now(),
+                    timestamp: new Date().toISOString(),
+                    action: action,        // CREATE, UPDATE, DELETE, LOGIN, APPROVE
+                    entity: entity,        // User, Vendor, Product, Order
+                    userId: userId,
+                    ipAddress: '192.168.1.' + Math.floor(Math.random() * 255), // Simulated IP
+                    details: details,
+                    status: 'SUCCESS'
+                };
+                auditLog.push(entry);
+                localStorage.setItem('auditLogs', JSON.stringify(auditLog));
+                console.log(`[ERP AUDIT] ${action} on ${entity} by ${userId}`);
+            },
+
+            getLogs: function () {
+                return JSON.parse(localStorage.getItem('auditLogs') || '[]');
+            }
+        };
+
+        // --- 2. Role-Based Access Control (RBAC) ---
+        const PERMISSIONS = {
+            ADMIN: ['CREATE_USER', 'DELETE_USER', 'APPROVE_VENDOR', 'VIEW_REPORTS', 'EXPORT_DATA', 'VIEW_AUDIT'],
+            VENDOR: ['ADD_ITEM', 'UPDATE_OWN_ITEM', 'VIEW_OWN_STATS'],
+            USER: ['PLACE_ORDER', 'VIEW_ORDERS', 'REQUEST_ITEM']
+        };
+
+        const RBAC = {
+            hasPermission: function (role, action) {
+                // Normalize role to uppercase
+                const upperRole = role.toUpperCase();
+                if (!PERMISSIONS[upperRole]) return false;
+                return PERMISSIONS[upperRole].includes(action);
+            },
+
+            checkAccess: function (role, action) {
+                if (!this.hasPermission(role, action)) {
+                    alert('⛔ ACCESS DENIED: Insufficient ERP Privileges.');
+                    return false;
+                }
+                return true;
+            }
+        };
+
+        // --- 3. SAP ERP Integration Hooks ---
+        const SAPIntegration = {
+            syncVendor: function (vendorData) {
+                console.log('🔄 [SAP INTEGRATION] Bridging to SAP S/4HANA...');
+                console.log(`Connector: BAPI_VENDOR_CREATEFROMDATA | Status: SYNCING...`);
+
+                // Simulate network latency and SAP response
+                setTimeout(() => {
+                    const sapId = 'SAP' + Math.floor(Math.random() * 1000000);
+                    const syncRecord = {
+                        acxiomId: vendorData.id,
+                        sapId: sapId,
+                        syncDate: new Date().toISOString(),
+                        status: 'SYNCED'
+                    };
+                    localStorage.setItem(`sap_sync_${vendorData.id}`, JSON.stringify(syncRecord));
+                    console.log(`✅ [SAP INTEGRATION] Sync Complete. SAP Vendor ID: ${sapId}`);
+                }, 800);
+            },
+
+            syncOrder: function (orderData) {
+                console.log('🔄 [SAP INTEGRATION] Posting Invoice to SAP FI/CO...');
+                // Simulate GL posting
+                const glEntry = {
+                    debit: 'Accounts Receivable',
+                    credit: 'Sales Revenue',
+                    amount: orderData.total,
+                    currency: 'INR',
+                    docDate: new Date().toISOString()
+                };
+                console.log('GL Document:', glEntry);
+            }
+        };
+
+        // --- 4. Business Rules Engine ---
+        const BusinessRules = {
+            validateOrder: function (orderData, vendorApprovalStatus) {
+                const errors = [];
+
+                // Rule 1: Minimum Order Value (Corporate Policy)
+                if (orderData.total < 100) {
+                    errors.push('Business Rule Violation: Minimum order value is $100 (Corporate Policy 102.3)');
+                }
+
+                // Rule 2: Compliance Check
+                if (vendorApprovalStatus !== 'approved') {
+                    errors.push('Compliance Error: Cannot procure from unapproved vendor (SOX Compliance)');
+                }
+
+                return errors;
+            }
+        };
+
+        // --- 5. Data Export Utilities (Excel/CSV) ---
+        const DataExport = {
+            toCSV: function (data, filename) {
+                if (!data || !data.length) {
+                    alert('No data to export');
+                    return;
+                }
+
+                const headers = Object.keys(data[0]);
+                let csv = headers.join(',') + '\n';
+
+                data.forEach(row => {
+                    const values = headers.map(header => {
+                        const val = row[header];
+                        return `"${val}"`; // Handle commas in data
+                    });
+                    csv += values.join(',') + '\n';
+                });
+
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename || 'acxiom_erp_export.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                AuditSystem.log('EXPORT_DATA', 'System', 'Admin', { filename: filename });
+            }
+        };
+
+        // --- 6. Order Status Constants ---
+        const ORDER_STATUS = {
+            PENDING: 'pending',
+            APPROVED: 'approved',
+            PROCESSING: 'processing',
+            COMPLETED: 'completed'
+        };
+
+        // --- 7. Product Categories for Technical Events ---
+        const PRODUCT_CATEGORIES = {
+            AUDIO: 'audio',
+            VISUAL: 'visual',
+            LIGHTING: 'lighting'
+        };
+
+        // --- 8. Sample Data Initialization ---
+        const SampleData = {
+            products: [
+                { id: 'PRD001', productName: 'Professional Wireless Microphone', category: 'audio', price: 18500, vendorName: 'SoundTech Pro', vendorId: 'VND001', available: true, stock: 15, image: '' },
+                { id: 'PRD002', productName: 'Studio Monitor Speakers (Pair)', category: 'audio', price: 35000, vendorName: 'SoundTech Pro', vendorId: 'VND001', available: true, stock: 8, image: '' },
+                { id: 'PRD003', productName: 'DJ Mixer Console', category: 'audio', price: 28000, vendorName: 'SoundTech Pro', vendorId: 'VND001', available: true, stock: 5, image: '' },
+                { id: 'PRD004', productName: 'LED Stage Light Panel', category: 'lighting', price: 12500, vendorName: 'LightCraft Events', vendorId: 'VND002', available: true, stock: 20, image: '' },
+                { id: 'PRD005', productName: 'Moving Head Spotlight', category: 'lighting', price: 24000, vendorName: 'LightCraft Events', vendorId: 'VND002', available: true, stock: 12, image: '' },
+                { id: 'PRD006', productName: 'RGB Laser Show System', category: 'lighting', price: 45000, vendorName: 'LightCraft Events', vendorId: 'VND002', available: true, stock: 4, image: '' },
+                { id: 'PRD007', productName: 'HD Projector 5000 Lumens', category: 'visual', price: 55000, vendorName: 'VisualPro Solutions', vendorId: 'VND003', available: true, stock: 6, image: '' },
+                { id: 'PRD008', productName: 'LED Video Wall Panel', category: 'visual', price: 32000, vendorName: 'VisualPro Solutions', vendorId: 'VND003', available: true, stock: 10, image: '' },
+                { id: 'PRD009', productName: 'Presentation Screen 120"', category: 'visual', price: 11000, vendorName: 'VisualPro Solutions', vendorId: 'VND003', available: true, stock: 8, image: '' },
+                { id: 'PRD010', productName: 'Conference Audio System', category: 'audio', price: 42000, vendorName: 'SoundTech Pro', vendorId: 'VND001', available: true, stock: 3, image: '' },
+                { id: 'PRD011', productName: 'Strobe Light Pack', category: 'lighting', price: 8500, vendorName: 'LightCraft Events', vendorId: 'VND002', available: true, stock: 25, image: '' },
+                { id: 'PRD012', productName: '4K Video Camera', category: 'visual', price: 72000, vendorName: 'VisualPro Solutions', vendorId: 'VND003', available: true, stock: 4, image: '' }
+            ],
+
+            vendors: [
+                { id: 'VND001', companyName: 'SoundTech Pro', contactPerson: 'John Smith', username: 'soundtech', password: 'vendor123', approval: 'approved', comments: 'Premium audio equipment supplier', lastUpdated: new Date().toISOString(), updatedBy: 'admin' },
+                { id: 'VND002', companyName: 'LightCraft Events', contactPerson: 'Sarah Johnson', username: 'lightcraft', password: 'vendor123', approval: 'approved', comments: 'Professional lighting solutions', lastUpdated: new Date().toISOString(), updatedBy: 'admin' },
+                { id: 'VND003', companyName: 'VisualPro Solutions', contactPerson: 'Mike Davis', username: 'visualpro', password: 'vendor123', approval: 'approved', comments: 'Visual display and projection', lastUpdated: new Date().toISOString(), updatedBy: 'admin' }
+            ],
+
+                        initializeData: function () {
+                // Only initialize if no data exists
+                if (!localStorage.getItem('products') || JSON.parse(localStorage.getItem('products')).length === 0) {
+                    localStorage.setItem('products', JSON.stringify(this.products));
+                    console.log('[ERP] Sample products initialized');
+                }
+
+                if (!localStorage.getItem('vendors') || JSON.parse(localStorage.getItem('vendors')).length === 0) {
+                    localStorage.setItem('vendors', JSON.stringify(this.vendors));
+                    console.log('[ERP] Sample vendors initialized');
+                }
+
+                // Initialize default admin account (sanskar)
+                if (!localStorage.getItem('admins') || JSON.parse(localStorage.getItem('admins')).length === 0) {
+                    localStorage.setItem('admins', JSON.stringify([
+                        { username: 'sanskar', password: 'admin123', role: 'admin', createdAt: new Date().toISOString() }
+                    ]));
+                    console.log('[ERP] Default admin initialized');
+                }
+
+                // Initialize default user account (sanskar1)
+                if (!localStorage.getItem('users') || JSON.parse(localStorage.getItem('users')).length === 0) {
+                    localStorage.setItem('users', JSON.stringify([
+                        { id: 'USR001', username: 'sanskar1', password: 'password123', email: 'sanskar1@example.com', createdAt: new Date().toISOString() }
+                    ]));
+                    console.log('[ERP] Default user initialized');
+                }
+
+                if (!localStorage.getItem('orders')) {
+                    localStorage.setItem('orders', JSON.stringify([]));
+                }
+            }
+            }
+        };
+
+        // Auto-initialize sample data on load
+        SampleData.initializeData();
+
+
+    </script>
+
+    <script>
+        const session = JSON.parse(sessionStorage.getItem('vendorSession'));
+        if (!session) window.location.href = 'vendor-login.html';
+
+        let productImageBase64 = '';
+
+        function logout() {
+            sessionStorage.removeItem('vendorSession');
+            window.location.href = '../index.html';
+        }
+
+        function previewImage(input) {
+            const file = input.files[0];
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('Image size must be less than 2MB');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    productImageBase64 = e.target.result;
+                    document.getElementById('imagePreview').src = productImageBase64;
+                    document.getElementById('imagePreview').style.display = 'block';
+                    document.getElementById('uploadPlaceholder').style.display = 'none';
+                    document.querySelector('.image-upload-area').classList.add('has-image');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        if (!localStorage.getItem('products')) localStorage.setItem('products', JSON.stringify([]));
+
+        document.getElementById('addItemForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // RBAC Check
+            if (!RBAC.checkAccess('VENDOR', 'ADD_ITEM')) return;
+
+            const products = JSON.parse(localStorage.getItem('products'));
+
+            const product = {
+                id: 'PRD' + Date.now(),
+                vendorId: session.id,
+                vendorName: session.companyName,
+                productName: document.getElementById('productName').value,
+                category: document.getElementById('category').value,
+                description: document.getElementById('description').value,
+                image: productImageBase64 || '',
+                price: parseFloat(document.getElementById('price').value),
+                stock: parseInt(document.getElementById('quantity').value),
+                condition: document.querySelector('input[name="condition"]:checked').value,
+                available: document.getElementById('available').checked,
+                date: new Date().toISOString()
+            };
+
+            products.push(product);
+            localStorage.setItem('products', JSON.stringify(products));
+
+            // Audit & SAP Hooks
+            AuditSystem.log('ADD_ITEM', 'Product', session.username, { product: product.productName, price: product.price });
+
+            // Mock SAP Sync
+            console.log('🔄 Triggering SAP Material Management (MM) Module...');
+            setTimeout(() => {
+                alert('✅ Product added successfully!\nID: ' + product.id + '\nPrice: ₹' + product.price);
+            }, 500);
+
+            // Reset form
+            this.reset();
+            productImageBase64 = '';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('uploadPlaceholder').style.display = 'block';
+            document.querySelector('.image-upload-area').classList.remove('has-image');
+        });
+    </script>
+</body>
+
+</html>
